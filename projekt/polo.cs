@@ -269,14 +269,14 @@ namespace projekt
             {
                 sqlConn.Open();
 
-                SqlCommand sqlCmd = new SqlCommand("SELECT id_marka, nazwa, kraj FROM marka where nazwa = @marka", sqlConn);
-                SqlParameter marka = new SqlParameter("@marka", poWyborze);
-                sqlCmd.Parameters.Add(marka);
+                SqlCommand sqlCmd = new SqlCommand("SELECT id_marka, nazwa, kraj FROM marka where nazwa = @nazwa", sqlConn);
+                SqlParameter nazwa = new SqlParameter("@nazwa", poWyborze);
+                sqlCmd.Parameters.Add(nazwa);
                 using (SqlDataReader saReader = sqlCmd.ExecuteReader())
                 {
                     while (saReader.Read())
                     {
-                        upKomorka = saReader.GetInt32(0);
+                        upMarka = saReader.GetInt32(0);
                         nazwaUpdate.Text = saReader.GetString(1);
                         krajUpdate.Text = saReader.GetString(2);
 
@@ -292,29 +292,29 @@ namespace projekt
             String nazwa = nazwaUpdate.Text;
             String kraj = krajUpdate.Text;
 
-            String komenda = "UPDATE marka SET nazwa='" + nazwa + "', kraj='" + kraj + "' WHERE id_marka = '" + upKomorka + "'";
+            String komenda = "UPDATE marka SET nazwa='" + nazwa + "', kraj='" + kraj + "' WHERE id_marka = '" + upMarka + "'";
             pol.dodanie(komenda);
 
         }
 
         private void button8_Click(object sender, EventArgs e)
         {
-            String poWyborze = (String)wybor2.SelectedItem;
+            String poWyborze = (String)wybor3.SelectedItem;
             using (SqlConnection sqlConn = new SqlConnection("Data Source=eos.inf.ug.edu.pl; Initial Catalog=mskalkowski;Persist Security Info=True;User ID=mskalkowski;Password=194916"))
             {
                 sqlConn.Open();
 
-                SqlCommand sqlCmd = new SqlCommand("SELECT id_komorka, model, cena, waga FROM komorka where nazwa = @komorka", sqlConn);
-                SqlParameter komorka = new SqlParameter("@komorka", poWyborze);
-                sqlCmd.Parameters.Add(komorka);
+                SqlCommand sqlCmd = new SqlCommand("SELECT id_komorka, model, waga, cena FROM komorka where model = @model", sqlConn);
+                SqlParameter model = new SqlParameter("@model", poWyborze);
+                sqlCmd.Parameters.Add(model);
                 using (SqlDataReader saReader = sqlCmd.ExecuteReader())
                 {
                     while (saReader.Read())
                     {
                         upKomorka = saReader.GetInt32(0);
                         modelUpdate.Text = saReader.GetString(1);
-                        wagaUpdate.Text = saReader.GetString(2);
-                        cenaUpdate.Text = saReader.GetString(3);
+                        wagaUpdate.Text = saReader.GetInt32(2);
+
                     }
                 }
 
