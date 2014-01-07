@@ -16,6 +16,7 @@ namespace projekt
     {
         private int upNazwisko;
         private int upMarka;
+        private int upKomorka;
         private Polaczenie pol = new Polaczenie();
         public polo()
         {
@@ -103,6 +104,16 @@ namespace projekt
                     {
                         string name = saReader4.GetString(0);
                         wybor2.Items.Add(name);
+                    }
+                }
+
+                SqlCommand sqlCmd5 = new SqlCommand("SELECT model FROM komorka;", sqlConn);
+                using (SqlDataReader saReader5 = sqlCmd5.ExecuteReader())
+                {
+                    while (saReader5.Read())
+                    {
+                        string name = saReader5.GetString(0);
+                        wybor3.Items.Add(name);
                     }
                 }
                 
@@ -258,14 +269,14 @@ namespace projekt
             {
                 sqlConn.Open();
 
-                SqlCommand sqlCmd = new SqlCommand("SELECT id_marka, nazwa, kraj FROM marka where nazwa = @nazwa", sqlConn);
+                SqlCommand sqlCmd = new SqlCommand("SELECT id_marka, nazwa, kraj FROM marka where nazwa = @marka", sqlConn);
                 SqlParameter marka = new SqlParameter("@marka", poWyborze);
                 sqlCmd.Parameters.Add(marka);
                 using (SqlDataReader saReader = sqlCmd.ExecuteReader())
                 {
                     while (saReader.Read())
                     {
-                        upMarka = saReader.GetInt32(0);
+                        upKomorka = saReader.GetInt32(0);
                         nazwaUpdate.Text = saReader.GetString(1);
                         krajUpdate.Text = saReader.GetString(2);
 
@@ -281,9 +292,45 @@ namespace projekt
             String nazwa = nazwaUpdate.Text;
             String kraj = krajUpdate.Text;
 
-            String komenda = "UPDATE marka SET nazwa='" + nazwa + "', kraj='" + kraj + "' WHERE id_marka = '" + upMarka + "'";
+            String komenda = "UPDATE marka SET nazwa='" + nazwa + "', kraj='" + kraj + "' WHERE id_marka = '" + upKomorka + "'";
             pol.dodanie(komenda);
 
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            String poWyborze = (String)wybor2.SelectedItem;
+            using (SqlConnection sqlConn = new SqlConnection("Data Source=eos.inf.ug.edu.pl; Initial Catalog=mskalkowski;Persist Security Info=True;User ID=mskalkowski;Password=194916"))
+            {
+                sqlConn.Open();
+
+                SqlCommand sqlCmd = new SqlCommand("SELECT id_komorka, model, cena, waga FROM komorka where nazwa = @komorka", sqlConn);
+                SqlParameter komorka = new SqlParameter("@komorka", poWyborze);
+                sqlCmd.Parameters.Add(komorka);
+                using (SqlDataReader saReader = sqlCmd.ExecuteReader())
+                {
+                    while (saReader.Read())
+                    {
+                        upKomorka = saReader.GetInt32(0);
+                        modelUpdate.Text = saReader.GetString(1);
+                        wagaUpdate.Text = saReader.GetString(2);
+                        cenaUpdate.Text = saReader.GetString(3);
+                    }
+                }
+
+                sqlConn.Close();
+            }
+
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            String model = modelUpdate.Text;
+            String waga = wagaUpdate.Text;
+            String cena = cenaUpdate.Text;
+
+            String komenda = "UPDATE komorka SET model='" + model + "', waga='" + waga + "',  cena='" + cena + "' WHERE id_komorka = '" + upKomorka + "'";
+            pol.dodanie(komenda);
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -324,6 +371,14 @@ namespace projekt
         {
 
         }
+
+        private void tabPage4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+       
+      
 
      
 
