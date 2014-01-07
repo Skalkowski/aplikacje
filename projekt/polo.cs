@@ -15,6 +15,7 @@ namespace projekt
     public partial class polo : Form
     {
         private int upNazwisko;
+        private int upMarka;
         private Polaczenie pol = new Polaczenie();
         public polo()
         {
@@ -95,6 +96,16 @@ namespace projekt
                     }
                 }
 
+                SqlCommand sqlCmd4 = new SqlCommand("SELECT nazwa FROM marka;", sqlConn);
+                using (SqlDataReader saReader4 = sqlCmd4.ExecuteReader())
+                {
+                    while (saReader4.Read())
+                    {
+                        string name = saReader4.GetString(0);
+                        wybor2.Items.Add(name);
+                    }
+                }
+                
                 sqlConn.Close();
             }
         }
@@ -113,12 +124,12 @@ namespace projekt
                 try
                 {
                     sqlCmd.ExecuteReader();
-                    MessageBox.Show("Deleted", "OK", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Usunięto", "OK", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 }
                 catch
                 {
-                    MessageBox.Show("Something went wrong!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Nie można usunąć, wybierz wpierw osobę,\nlub usuń wpierw wszystkie modele komórki tej osoby!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 sqlConn.Close();
             }
@@ -144,12 +155,12 @@ namespace projekt
                 try
                 {
                     sqlCmd.ExecuteReader();
-                    MessageBox.Show("Deleted", "OK", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Usunięto", "OK", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 }
                 catch
                 {
-                    MessageBox.Show("Something went wrong!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Nie można usunąć, wybierz wpierw markę,\nlub usuń wszystkie modele komórki tej marki!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 sqlConn.Close();
             }
@@ -239,5 +250,83 @@ namespace projekt
             String komenda = "UPDATE osoba SET imie='" + imie + "', nazwisko='" + nazwisko + "' WHERE id_osoba = '" + upNazwisko + "'";
             pol.dodanie(komenda);
         }
+        
+        private void button6_Click(object sender, EventArgs e)
+        {
+            String poWyborze = (String)wybor2.SelectedItem;
+            using (SqlConnection sqlConn = new SqlConnection("Data Source=eos.inf.ug.edu.pl; Initial Catalog=mskalkowski;Persist Security Info=True;User ID=mskalkowski;Password=194916"))
+            {
+                sqlConn.Open();
+
+                SqlCommand sqlCmd = new SqlCommand("SELECT id_marka, nazwa, kraj FROM marka where nazwa = @nazwa", sqlConn);
+                SqlParameter marka = new SqlParameter("@marka", poWyborze);
+                sqlCmd.Parameters.Add(marka);
+                using (SqlDataReader saReader = sqlCmd.ExecuteReader())
+                {
+                    while (saReader.Read())
+                    {
+                        upMarka = saReader.GetInt32(0);
+                        nazwaUpdate.Text = saReader.GetString(1);
+                        krajUpdate.Text = saReader.GetString(2);
+
+                    }
+                }
+
+                sqlConn.Close();
+            }
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            String nazwa = nazwaUpdate.Text;
+            String kraj = krajUpdate.Text;
+
+            String komenda = "UPDATE marka SET nazwa='" + nazwa + "', kraj='" + kraj + "' WHERE id_marka = '" + upMarka + "'";
+            pol.dodanie(komenda);
+
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            this.Hide(); //schowanie form1
+            Form1 form1 = new Form1();
+            form1.ShowDialog();
+            this.Close(); //zamkniecie form1
+        }
+
+        private void tabelki_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            tabelki.Clear();
+            ArrayList wszystko = pol.drukuj("SELECT * FROM marka;");
+
+            for (int i = 0; i < wszystko.Count; i++)
+            {
+                tabelki.AppendText(wszystko[i] + "\n");
+            }
+        }
+
+        private void wybor_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void imieUpdate_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+     
+
+       
     }
 }
