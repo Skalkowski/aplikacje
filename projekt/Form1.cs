@@ -28,8 +28,8 @@ namespace projekt
         private void bez_Click(object sender, EventArgs e)
         {
             this.Hide(); //schowanie form1
-            Form2 form2 = new Form2();
-            form2.ShowDialog();
+            Offlina offline = new Offlina();
+            offline.ShowDialog();
             this.Close(); //zamkniecie form1
         }
 

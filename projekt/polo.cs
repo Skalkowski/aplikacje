@@ -196,12 +196,12 @@ namespace projekt
                 try
                 {
                     sqlCmd.ExecuteReader();
-                    MessageBox.Show("Deleted", "OK", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Usunięto", "OK", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 }
                 catch
                 {
-                    MessageBox.Show("Something went wrong!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Coś nie tak", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 sqlConn.Close();
             }
@@ -220,11 +220,11 @@ namespace projekt
             {
 
                 pol.dodanie("INSERT INTO osoba (imie, nazwisko) VALUES ('" + imiecos + "', '" + nazwiskocos + "');");
-                MessageBox.Show("ok");
+                MessageBox.Show("Dodano", "OK", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch
             {
-                MessageBox.Show("dupa");
+                MessageBox.Show("Coś nie tak", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -304,7 +304,7 @@ namespace projekt
             {
                 sqlConn.Open();
 
-                SqlCommand sqlCmd = new SqlCommand("SELECT id_komorka, model, waga, cena FROM komorka where model = @model", sqlConn);
+                SqlCommand sqlCmd = new SqlCommand("SELECT id_komorka, model, waga, cena, id_osoba, id_komorka FROM komorka where model = @model", sqlConn);
                 SqlParameter model = new SqlParameter("@model", poWyborze);
                 sqlCmd.Parameters.Add(model);
                 using (SqlDataReader saReader = sqlCmd.ExecuteReader())
@@ -313,8 +313,10 @@ namespace projekt
                     {
                         upKomorka = saReader.GetInt32(0);
                         modelUpdate.Text = saReader.GetString(1);
-                        wagaUpdate.Text = saReader.GetInt32(2);
-
+                        wagaUpdate.Text = Convert.ToString(saReader.GetInt32(2));
+                        cenaUpdate.Text = Convert.ToString(saReader.GetInt32(3));
+                        osobaUpdate.Text = Convert.ToString(saReader.GetInt32(4));
+                        markaUpdate.Text = Convert.ToString(saReader.GetInt32(5));
                     }
                 }
 
@@ -328,8 +330,9 @@ namespace projekt
             String model = modelUpdate.Text;
             String waga = wagaUpdate.Text;
             String cena = cenaUpdate.Text;
-
-            String komenda = "UPDATE komorka SET model='" + model + "', waga='" + waga + "',  cena='" + cena + "' WHERE id_komorka = '" + upKomorka + "'";
+            String id_osoba = osobaUpdate.Text;
+            String id_marka = markaUpdate.Text;
+            String komenda = "UPDATE komorka SET model='" + model + "', waga='" + waga + "',  cena='" + cena + "',  id_osoba='" + id_osoba + "',  id_marka='" + id_marka + "' WHERE id_komorka = '" + upKomorka + "'";
             pol.dodanie(komenda);
         }
 
@@ -373,6 +376,92 @@ namespace projekt
         }
 
         private void tabPage4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label7_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void wagaUpdate_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void imie_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void nazwisko_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button10_Click(object sender, EventArgs e)
+        {
+            String nazwacos = nazwa.Text;
+            String krajcos = kraj.Text;
+            try
+            {
+
+                pol.dodanie("INSERT INTO marka (nazwa, kraj) VALUES ('" + nazwacos + "', '" + krajcos + "');");
+                MessageBox.Show("Dodano", "OK", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch
+            {
+                MessageBox.Show("Coś nie tak", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void dodajModel_Click(object sender, EventArgs e)
+        {
+            String modelcos = model.Text;
+            int wagacos = Convert.ToInt32(waga.Text);
+            int cenacos = Convert.ToInt32(cena.Text);
+            int idosoba = Convert.ToInt32(os.Text);
+            int idmarka = Convert.ToInt32(mark.Text);
+            
+ 
+            try
+            {
+
+                pol.dodanie("INSERT INTO komorka (model, waga, cena, id_osoba, id_marka) VALUES ('" + modelcos + "'," + wagacos + ", "+cenacos+","+ idosoba+"," + idmarka +");");
+                MessageBox.Show("Dodano", "OK", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+           catch
+            {
+                MessageBox.Show("Coś nie tak", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+        }
+
+        private void button3_Click_1(object sender, EventArgs e)
+        {
+            aktualizujSelect.Clear();
+            ArrayList wszystko = pol.drukuj("SELECT id_osoba, nazwisko FROM osoba;");
+
+            for (int i = 0; i < wszystko.Count; i++)
+            {
+                aktualizujSelect.AppendText(wszystko[i] + "\n");
+            }
+        }
+
+        private void button10_Click_1(object sender, EventArgs e)
+        {
+            aktualizujSelect.Clear();
+            ArrayList wszystko = pol.drukuj("SELECT id_marka, nazwa FROM marka;");
+
+            for (int i = 0; i < wszystko.Count; i++)
+            {
+                aktualizujSelect.AppendText(wszystko[i] + "\n");
+            }
+
+        }
+
+        private void label28_Click(object sender, EventArgs e)
         {
 
         }

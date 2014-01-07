@@ -16,7 +16,7 @@ D:\Videos\GitHub\aplikacje\aplikacje\projekt\bin\Debug\projekt.exe
 D:\Videos\GitHub\aplikacje\aplikacje\projekt\bin\Debug\projekt.pdb
 D:\Videos\GitHub\aplikacje\aplikacje\projekt\obj\Debug\projekt.csprojResolveAssemblyReference.cache
 D:\Videos\GitHub\aplikacje\aplikacje\projekt\obj\Debug\projekt.Form1.resources
-D:\Videos\GitHub\aplikacje\aplikacje\projekt\obj\Debug\projekt.Form2.resources
 D:\Videos\GitHub\aplikacje\aplikacje\projekt\obj\Debug\projekt.polo.resources
 D:\Videos\GitHub\aplikacje\aplikacje\projekt\obj\Debug\projekt.Properties.Resources.resources
 D:\Videos\GitHub\aplikacje\aplikacje\projekt\obj\Debug\projekt.csproj.GenerateResource.Cache
+D:\Videos\GitHub\aplikacje\aplikacje\projekt\obj\Debug\projekt.Offlina.resources
